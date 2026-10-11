@@ -32,7 +32,7 @@ Detailed evidence and links: [matrix](../docs/research/data-source-matrix.md).
 | SRC-004 | GS1 Canada ECCnet and Content API | Licensed product identity and attributes for subscribers | No prices found in this research |
 | SRC-005 | Flipp FlyerKit | Structured circulars for a partner token, including postal-code lookup as documented for retailers | Only if Flipp grants this product a licence. Not assumed. |
 | SRC-006 | Direct data agreement with a banner or its e-commerce operator | Store-level prices and promotions | Preferred path. No agreement exists. |
-| SRC-007 | Public retailer websites and flyer pages | What a shopper can see in a browser | Not a granted API. Commercial reuse is not assumed. |
+| SRC-007 | Official weekly flyer pages on retailer websites | A model reads the flyer the site shows for a store or postal code, instead of a price-extraction API | Only after a rights review and a check that each price is on the cited page. Not tested. |
 | SRC-008 | Unofficial scrapers and reseller APIs | Observed third-party products that copy retailer sites | Not eligible |
 
 ### Retailer and regional coverage
@@ -59,7 +59,7 @@ Loyalty programs marketed alongside these banners include PC Optimum (Loblaw) an
 | Public open data | Published with a licence that allows the intended use, subject to attribution or share-alike | Statistics Canada Open Licence for SRC-001. Open Food Facts ODbL for SRC-002. |
 | Licensed partner data | Available under a contract, token, or subscriber relationship | Flipp FlyerKit tokens issued by a Flipp contact (SRC-005). GS1 Canada subscriber access (SRC-004). A future retailer agreement (SRC-006). |
 | Authenticated user data | Available only in a signed-in shopper's own session | Loyalty offer wallets, personalized coupons. Out of MVP scope to connect. |
-| Public on a website | Visible to a browser, copyright and terms still apply | Retailer flyer pages (SRC-007). Visibility is not permission to copy into this product. |
+| Public on a website | Visible to a browser, copyright and terms still apply | Official weekly flyer pages (SRC-007). A model may be the reader. Visibility is not permission to store or resell the flyer. |
 | Unofficial copy | A third party collected the data without this project reviewing a right to reuse it | Scraper APIs (SRC-008). |
 
 Connector records store the class. Only `authorized` records, which require the open-data conditions to be met or a licence to be on file, can feed a user-facing plan (FR-009).
@@ -136,7 +136,7 @@ When the preferred price feed is missing, the product does the following, in ord
 5. Show an SRC-001 average only in a clearly labeled context module, with Statistics Canada attribution, and never as the line price or the savings baseline.
 6. If the region has no authorized price source, show the coverage gate (FR-024).
 
-The product does not fall back to scraping, to an unofficial scraper API, or to a model-generated price.
+The product does not fall back to an unofficial scraper API or to a price the model invents. For weekly flyers, the candidate reader is the model looking at the official flyer page. That output stays out of the guaranteed total until DAT-OQ-009 is resolved and each price is checked against the page. See [ADR-002](../adr/002-grocery-data-strategy.md).
 
 Local development falls back to synthetic fixtures that FR-025 forbids in the pilot UI.
 
@@ -150,3 +150,4 @@ Local development falls back to synthetic fixtures that FR-025 forbids in the pi
 | DAT-OQ-004 | Which loyalty program rules apply in the first pilot region? |
 | DAT-OQ-005 | Can the reference basket be defined from public StatCan categories, or does it need a separate household staple list? |
 | DAT-OQ-006 | Are flyer prices zone-level while shelf prices are store-level, and how should the UI say that? |
+| DAT-OQ-009 | Do the pilot banners' flyer terms allow the product to store and display an AI reading of the official weekly flyer page? |

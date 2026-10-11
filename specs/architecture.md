@@ -108,7 +108,7 @@ sequenceDiagram
   API->>DB: Approval record
 ```
 
-Offer search reads the application's snapshot tables. The request path does not scrape a retailer and does not depend on a live third-party call to render a price, except where a connector's contract says a synchronous licensed call is the source of truth. Even then, the response is stored as a snapshot before the optimizer sees it, so the plan hash points at stored evidence.
+Offer search reads the application's snapshot tables. The request path does not call an unofficial scraper and does not invent a price. A weekly flyer may later be read by the model from the retailer's own flyer page, as described in [ADR-002](../adr/002-grocery-data-strategy.md). That reading is not authorized yet. If it is authorized, the page is stored as a snapshot and checked before the optimizer treats a price as current.
 
 Explanations are generated after optimization. The prompt for that step includes the optimizer JSON and an instruction to refuse numbers that are not in the JSON. The UI still displays the JSON fields, not amounts parsed back out of the paragraph.
 

@@ -27,7 +27,7 @@ Optimization is specified now and implemented in phase 5 against fixtures before
 - Complete the rights checklist in [ADR-002](../adr/002-grocery-data-strategy.md) for any source that remains possible.
 - Draw a sample for a reference basket. Measure fields, geography, and freshness. Do not estimate coverage without a sample.
 - Decide whether SRC-002 can be used for identity given ODbL (DAT-OQ-002).
-- Leave SRC-007 and SRC-008 unused.
+- Leave SRC-008 unused. SRC-007 is a feasibility question only: whether an AI read of the official weekly flyer page is allowed (DAT-OQ-009). Do not build that reader in this phase.
 
 **Gate G-1.** One source is `authorized` for a named set of postal codes or stores, the sample meets the field list, and the cost is known. If the gate fails, the roadmap stops at a research report. The application is not built around hoped-for access.
 

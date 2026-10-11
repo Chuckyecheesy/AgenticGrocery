@@ -16,7 +16,7 @@ Strategy that uses these notes: [ADR-002](../../adr/002-grocery-data-strategy.md
 | SRC-004 | GS1 Canada ECCnet | Product registry for subscribers | Canada trading partners named in marketing | Subscriber / trading partner | "Perpetually updated" in marketing. No SLA measured. | Not published. Contact required. | Not validated |
 | SRC-005 | Flipp FlyerKit | Partner flyer API | Postal-code parameter documented. Retailer list not granted to us. | Partner token from a Flipp contact. No self-serve signup. | Validity and availability dates documented. | Not published | Not validated. Not authorized for this product. |
 | SRC-006 | Direct retailer agreement | Shelf and promo prices | Unknown until a partner answers | None on file | Unknown | Unknown | Not started |
-| SRC-007 | Retailer public websites | What shoppers see | Banner-specific, unverified | Not granted by this research | Unknown | n/a | Rights blocked for copying |
+| SRC-007 | Official weekly flyer pages | Model reads the flyer on the retailer site. No price API assumed. | Banner-specific, unverified | Not granted by this research | Unknown. Weekly pages exist; lag not measured. | Model-call cost unknown | Not tested. Rights still blocked. |
 | SRC-008 | Unofficial scraper APIs | Copies of retailer sites | Claims vary by vendor | No right for this product | Vendor claims, untested | Vendor price lists exist and were not adopted | Rejected |
 
 ## SRC-001 Statistics Canada monthly average retail prices
@@ -122,12 +122,12 @@ Public consumer flyer pages, such as Metro's flyer, show that shoppers can view 
 | Candidate | Loblaw banner sites, PC Express, Voilà, Metro, Walmart Canada, and similar. |
 | Retailer and geographic coverage | Each site covers its own banners. This project did not map postal codes. |
 | Available data fields | Whatever the site shows a shopper. Undocumented JSON used by those sites is still the retailer's data. |
-| Access method | Browser. Automated access was not attempted and is not approved. |
-| Licensing status | `rights_blocked` for this product until a counsel review of the specific terms says otherwise. Visibility is not a licence. |
+| Access method | Candidate, not built: open the official weekly flyer for a store or postal code and have the model read the page into structured offer candidates. This replaces a dedicated flyer-extraction API for that job. No page was read by a model in this research pass. |
+| Licensing status | `rights_blocked` until a review of the specific flyer terms allows storage and display (DAT-OQ-009). A model reading the page does not create that permission. |
 | Price and promotion freshness | Not measured. |
 | Estimated cost | Not a permitted integration, so cost is not estimated. |
 | Validation status | Not tested. Do not describe this project as having called retailer endpoints. |
-| Known limitations | Terms of use, copyright in flyer creative, image rights, blocking, and schema changes. Reverse-engineered endpoints in blog posts and unofficial clients are not a specification. |
+| Known limitations | Terms of use, copyright in flyer creative, image rights, and layout changes. A model can misread a price, miss a condition, or fill a gap; those outputs stay `uncertain` until checked against the page. Reverse-engineered site endpoints are not this method and are not a specification. |
 
 ## SRC-008 Unofficial third-party scrapers
 
