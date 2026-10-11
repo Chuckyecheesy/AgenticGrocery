@@ -22,10 +22,12 @@ A user can start with a request such as: "I'm running out of groceries. Help me 
 - Autonomous checkout, payment, or order placement.
 - A native mobile app for the first release.
 - Multiple autonomous agents.
-- Scraping retailer websites or reusing flyer content without a licence.
+- Reusing flyer content without a licence. An AI reading of an official weekly flyer page is a candidate method, not a granted right. See [adr/002-grocery-data-strategy.md](adr/002-grocery-data-strategy.md).
 - Invented prices, invented quality scores, or savings without a documented baseline.
 - Applying a coupon or loyalty price before eligibility is established.
 - Canada-wide availability before retailer and geographic coverage are verified.
+- Inferring a shopping cadence before the user confirms it.
+- Meal planning and in-store aisle guidance in the first release.
 
 ## Current development stage
 

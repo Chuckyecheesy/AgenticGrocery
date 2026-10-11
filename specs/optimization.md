@@ -23,6 +23,26 @@ for the **same variant at the same store**, when the regular offer is `current` 
 
 If the regular offer is missing, stale, or from another store, the saving is omitted. The promotional price may still be the price paid. A Statistics Canada average is not a baseline. A model's estimate is not a baseline.
 
+## Optimization problem
+
+Notation uses integers. `cents(line)` is the line total from the multi-buy rules below. There is no floating-point objective.
+
+For a plan version, let needs be `i = 1..n`. After hard filters, need `i` has a finite candidate set `C_i`. A plan chooses at most `max_stores` stores and at most one included offer per need.
+
+**Hard filters, applied before any objective.** An offer is outside every `C_i` when it is not `current`, fails a known hard constraint, has loyalty or coupon eligibility other than `eligible`, is missing an attribute a hard constraint needs, or has a package size other than the size the user marked required for that need. A missing allergen declaration does not enter `C_i`. A usual package size that is not marked required does not remove candidates.
+
+**Cap constraint.** If the selected mode has a budget `B` and the user has not waived it, a plan with `sum(cents(line)) > B` is returned with `within_budget = false` and is not approvable until the user changes the cap, the needs, or the soft preferences. The solver does not delete a hard filter to satisfy `B`.
+
+**Budget-first objective.** Choose the feasible assignment with the minimum `sum(cents(line))`, covering as many needs as `C_i` allows. Unmet needs stay unmet with a reason. Ties follow the ordered list in the budget-first section.
+
+**Quality-first objective.** Intersect `C_i` with offers that carry the named quality attributes for that need. If the intersection is empty, the need is unmet. Otherwise minimize the same sum inside the intersection.
+
+**Balanced objective.** Compute the quality-first plan and the budget-first plan that drops only soft attributes. If they differ and the quality-first plan exceeds `B` or a soft attribute is lost, return both plans and do not select one.
+
+**Soft preferences** affect ties and the balanced comparison. They are preferred brand, named quality attributes, usual package size, fewer stores, and fewer class-2 substitutions. They are not filters, except quality attributes inside quality-first and balanced, where the user has already required those attributes by selecting the mode.
+
+Travel time and transportation cost are not terms in the MVP objective. Distance is a label when a source provides it.
+
 ## Priority modes
 
 Inputs to every mode:
@@ -41,6 +61,7 @@ Hard filters run before ranking in every mode:
 2. Drop offers that violate a hard constraint when the attribute is known.
 3. Drop loyalty and coupon prices whose eligibility is not `eligible`.
 4. Drop offers whose package dimension is `unknown` from unit-price ranking. They can still fill a need when the user named that exact variant and no size comparison is required.
+5. When the user has marked a package size as required for that need, drop other sizes. A usual size that is not marked required stays a soft preference and does not remove candidates.
 
 ### Budget-first
 
@@ -249,6 +270,7 @@ These are the minimum automated tests (NFR-002). Inputs are fixtures. Expected t
 | TC-OPT-025 | No included lines | Total field absent, not 0. |
 | TC-OPT-026 | Class-2 substitute, policy closed | Not included until a confirmation flag is in the input. |
 | TC-OPT-027 | Display rounding 1.5 L at 399 cents per 100 ml | Exact comparison basis `399/1500`. Display per 100 ml is 27 cents (`26.6` rounds half away from zero). Line total remains 399. |
+| TC-OPT-028 | Need requires 2 L. Candidates are 2 L and 1 L of the same product, both otherwise eligible | Only the 2 L offer is included. The 1 L offer is excluded. |
 
 ## Open questions
 

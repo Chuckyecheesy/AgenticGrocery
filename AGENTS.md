@@ -90,7 +90,9 @@ Never fabricate grocery prices, promotions, retailer coverage, product availabil
 
 Never claim a retailer integration, API, or data source has been tested unless this project has actually tested it and the evidence is cited.
 
-A page that shoppers can open is not permission to scrape or commercially reuse that content. Public websites and unofficial scraper APIs stay unused. See DEC-DAT-001 in ADR-002, which remains a proposed rule and matches the current research policy.
+A page that shoppers can open is not permission to copy it into the product. Unofficial scraper APIs stay unused.
+
+For weekly flyers, the working idea is that the model reads the official flyer page for the user's store or postal code, instead of calling a price-extraction API. That idea is recorded in ADR-002. It has not been tested. A model transcript is not a verified price and is not a licence. Do not implement the reader until DAT-OQ-009 is resolved.
 
 A price shown to a user needs a source record, an observation time, and a validity window. A coupon or loyalty price is included only after eligibility is established. A saving needs the documented regular-price baseline in [specs/optimization.md](specs/optimization.md). National average prices are not that baseline.
 
@@ -112,7 +114,7 @@ The model may handle language understanding, research coordination, explanations
 
 Deterministic code must handle prices, unit prices, basket totals, budget constraints, promotion math, savings, hard dietary constraints, and any other calculation that must be reproducible. The same inputs must produce the same basket. Hard dietary constraints are filters. The optimizer must not relax them. Unknown allergen data is not evidence that a product is safe.
 
-Normative detail, when implementation is eventually allowed: [specs/architecture.md](specs/architecture.md) and [specs/optimization.md](specs/optimization.md).
+Normative detail, when implementation is eventually allowed: [specs/architecture.md](specs/architecture.md) and [specs/optimization.md](specs/optimization.md). The capability table in the architecture document is the split between model work and deterministic work. Meal planning, inferred recurrence, travel-cost optimization, and aisle order stay out of the MVP.
 
 ## Human-in-the-loop
 

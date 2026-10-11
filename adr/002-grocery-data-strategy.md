@@ -31,9 +31,25 @@ Until a licensed loyalty integration exists, member and coupon prices are stored
 
 1. A direct agreement with a banner or its authorized data partner for the pilot stores (SRC-006).
 2. A Flipp or similar licence that explicitly covers this product's storage and display, if the grant is broader than "retailers building their own flyer experience" (SRC-005). This is unconfirmed.
-3. Stop, and keep the app on fixtures for internal development (FR-025).
+3. For weekly flyers, an AI read of the retailer's own flyer page, if the rights review allows storage and display (SRC-007). See below. This path has not been tested.
+4. Stop, and keep the app on fixtures for internal development (FR-025).
 
 Open product data (SRC-002) is a candidate for identity only, after the share-alike review (DAT-OQ-002). Open Prices (SRC-003) stays out of the guaranteed total until a sample proves coverage and rights.
+
+### Weekly flyers read from the retailer page
+
+**Direction, recorded 2026-10-11. Not tested. Pending validation.**
+
+Weekly flyers do not require a separate price-extraction API. The candidate method is to open the official flyer page for the user's store or postal code and have the model read the flyer the site is showing. The model turns that page into structured candidates: product name, price, package size, multi-buy terms, dates, and conditions.
+
+This is a reading step, not a licence and not a verified price.
+
+- The page URL, retrieval time, and the flyer region or store are stored with every candidate.
+- A price enters the guaranteed total only after it is checked against that page and passes the same provenance rules as any other offer. A model guess is not evidence.
+- If the flyer omits a validity end, package size, or condition, the candidate stays `uncertain`.
+- Unit prices, totals, eligibility, and savings stay in deterministic code.
+- Reading a public flyer page does not by itself allow commercial reuse. SRC-007 stays blocked until that review passes (DAT-OQ-009).
+- Unofficial scraper APIs remain out of the strategy.
 
 ## Source selection criteria
 
@@ -87,7 +103,7 @@ Specified in [data-sources.md](../specs/data-sources.md). Short form:
 5. Attributed StatCan context, isolated from totals.
 6. Coverage gate.
 
-Scraping is not a fallback.
+An unofficial scraper API is not a fallback. A model reading of an official weekly flyer is the SRC-007 candidate above. Its output is not a fallback price until the rights review and the page check both pass.
 
 ## Retailer rollout
 
@@ -111,13 +127,14 @@ Banner families in the data-source document are a feasibility checklist. They ar
 | DAT-OQ-006 | How are zone-level flyer prices labeled versus store-level shelf prices? |
 | DAT-OQ-007 | Does the first licence allow caching for the plan-hash audit, and for how long? |
 | DAT-OQ-008 | Are French source strings required for the first region (NFR-007)? |
+| DAT-OQ-009 | Do the weekly-flyer terms for the pilot banners allow an AI read of the official flyer page to be stored and shown in this product? |
 
 ## Consequences
 
 - The pilot can be small and still honest.
 - Schedule depends on a third party. That is accepted.
 - Internal demos use synthetic data and say so.
-- Building connectors for SRC-007 or SRC-008 would violate this ADR.
+- Building an unofficial scraper, or enabling an AI flyer reader before DAT-OQ-009 passes, violates this ADR. After that review, a weekly-flyer reader may store only candidates that were checked against the official page.
 
 ## Decision
 

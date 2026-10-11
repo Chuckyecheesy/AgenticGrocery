@@ -14,6 +14,31 @@ A person who wants to restock has to discover which stores are relevant, read fl
 
 Existing flyer apps, retailer sites, and loyalty programs each cover part of the task. None of them, in this product's scope, takes a plain-language restock request, uses only authorized data, shows its uncertainty, and hands back a shopping plan a person can approve.
 
+## Problem discovery
+
+This is the analysis behind the requirements. It does not add a second set of requirements.
+
+| Step | Finding |
+| --- | --- |
+| Observation | A household restock is assembled by hand: remember what is low, open several banner sites or flyers, compare package sizes, drop items that violate a diet or allergy, and pick a store. |
+| Why that happens | Prices, promotions, and pack sizes are local and change by week. The comparable figure is a unit price, which is often not what the flyer prints. |
+| Why it matters | A wrong pack wastes money. A wrong ingredient wastes the trip. A missed allergy is not a preference error. |
+| Controllability | The shopper can do the work. The barrier is scattered sources, short validity windows, and arithmetic across packs. A flyer app can show a deal and still leave the constrained basket to the shopper. |
+| Concrete problem | Turn a restock request plus household constraints into one reviewable basket for a known area, using only current authorized offers, with unit prices, stated gaps, and an explicit approval. |
+| Difficulty | Catalogs are incomplete. Offers expire. Budget and named quality attributes conflict. Preferences differ by household. Flyer text can be misread. Coverage differs by postal code. Several baskets can be feasible. |
+| AI suitability | Language and missing-information questions are model work. Prices, filters, totals, and eligibility are deterministic. Retrieval depends on an authorized source. Approval is human. The module table is in [architecture.md](architecture.md). |
+
+A deterministic form can optimize a basket once the needs and the offers are structured. It cannot reliably turn "I'm running out of groceries" into that structure, or decide which clarifying question to ask. That is the model’s scope. The model does not make the product valuable by being present. It is valuable only for interpretation, question selection, and explanation of a result the optimizer already computed.
+
+## Recorded distinctions
+
+These keep later wording from overriding the requirements:
+
+- An excluded brand is a hard constraint. A preferred brand is a soft preference (FR-003). The optimizer does not treat a preferred brand as a filter.
+- A budget cap blocks silent acceptance of an over-budget plan. It does not delete a hard constraint to make the total fit. See [optimization.md](optimization.md).
+- Saved staples are user-confirmed. The MVP does not infer a shopping cadence from behavior.
+- Meal planning, travel-cost optimization, and in-store aisle order are later product phases in [roadmap.md](roadmap.md), not silent MVP scope.
+
 ## Product vision
 
 Agentic Grocery is a web assistant for individuals and families in Canada. It helps them restock groceries, find real deals from authorized sources, and compare baskets.
@@ -76,9 +101,11 @@ The user can save and later change:
 - priority mode (FR-004)
 - optional weekly or trip budget in Canadian dollars
 - hard constraints: allergens, excluded ingredients, excluded diets, and excluded brands
-- soft preferences: preferred brands and named quality attributes
+- soft preferences: preferred brands, named quality attributes, and an optional usual package size on a staple
 - default store count (one store unless the user enables a multi-store plan)
 - staple items and usual quantities
+
+A usual package size is a soft preference. The review shows it beside a class-1 size substitution. It excludes other sizes only when the user marks that size as required for that staple.
 
 Saved preferences are applied to the next plan. The user can override them for a single plan without deleting the saved values.
 
@@ -142,7 +169,7 @@ A savings amount is shown only with the baseline used. The baseline is the in-da
 
 ### FR-016 Plan review
 
-Before approval, the user sees the plan: stores, lines, quantities, package sizes, unit prices, line totals, guaranteed total, excluded uncertain lines, unmet needs, constraints applied, substitutions, savings with baselines, and provenance. The user can see why a lower-priced candidate was rejected when it failed a hard constraint.
+Before approval, the user sees the plan: stores, lines, quantities, package sizes, unit prices, line totals, guaranteed total, excluded uncertain lines, unmet needs, constraints applied, substitutions, savings with baselines, and provenance. The user can see why a lower-priced candidate was rejected when it failed a hard constraint. Any sentence that explains a choice uses reasons and amounts from the stored optimization result. The guaranteed total on screen is that result, not a number parsed out of the explanation.
 
 ### FR-017 Explicit approval
 
@@ -223,7 +250,26 @@ Illustrative prices may appear in specifications and automated tests. The pilot 
 - Travel-time or fuel-cost optimization. Distance may be shown only when an authorized source supplies it, as a label, not as a dollar saving.
 - Public launch outside regions that pass the coverage gate (FR-024).
 - French UI, until a Quebec pilot is scheduled (NFR-007).
-- Scraping, unofficial price APIs, and use of retailer images without rights. See [data-sources.md](data-sources.md).
+- Unofficial price APIs, and use of retailer images without rights. An AI read of an official weekly flyer page is a candidate in [ADR-002](../adr/002-grocery-data-strategy.md), not an authorized source. See [data-sources.md](data-sources.md).
+- Inferring how often a household buys an item. Confirmed staples are in scope. Observed purchase history and unconfirmed inferences are not.
+- Meal-to-ingredient planning, travel-cost math, and in-store aisle order. Phase placement is in [roadmap.md](roadmap.md).
+
+## Personalization
+
+| Field | When it is collected | Applied when |
+| --- | --- | --- |
+| Email | Required for the account | Sign-in only |
+| Postal code or consented location | Required before store research. Postal code is always an alternative | This plan, and saved only as FR-005 and PRV-002 allow |
+| Priority mode | Required | Every plan |
+| Budget | Required for budget-first and balanced, unless the user explicitly waives the cap | That mode |
+| Allergens, excluded ingredients, excluded diets, excluded brands | Optional. Empty means the user has not stated one | Immediately, as hard filters |
+| Preferred brands, quality attributes, usual package size | Optional, except quality attributes required by quality-first and balanced | Soft ranking, or a pause when the mode needs them |
+| Preferred and hidden stores, maximum store count | Optional. Default is one store | Store selection |
+| Staples and quantities | Optional. The user confirms them | Restock plans |
+| Shopping cadence inferred from history | Not collected in the MVP | Not applied |
+| Transportation method, willingness to travel, meal preferences | Not collected in the MVP | Not applied |
+
+A learned pattern is applied only after the user confirms it. The MVP has no learner. Confirmation of a saved preference is the edit in FR-003 and the conflict check in HITL-008.
 
 ## Human-in-the-loop requirements
 
