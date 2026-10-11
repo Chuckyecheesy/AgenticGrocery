@@ -25,7 +25,7 @@ Each criterion is testable by an automated test, an API check, or a scripted pil
 | FR-014 | AC-020, TC-OPT-026 |
 | FR-015 | AC-021, TC-OPT-018, TC-OPT-019 |
 | FR-016 | AC-022, AC-061 |
-| FR-017 | AC-023, AC-024, AC-025, AC-062 |
+| FR-017 | AC-023, AC-024, AC-025 |
 | FR-018 | AC-026, AC-062 |
 | FR-019 | AC-027, TC-OPT-020, TC-OPT-021, TC-OPT-022, TC-OPT-025 |
 | FR-020 | AC-028, AC-029 |
@@ -172,15 +172,15 @@ Given an optimization result whose guaranteed total is 650 cents, when an explan
 
 ### AC-062 No purchase tool
 
-Given a model transcript that requests a tool named `purchase`, `checkout`, or `approve`, when the orchestrator handles the transcript, then the tool call is rejected and the plan status is not `approved`.
+Given a model transcript that requests a tool named `purchase` or `checkout`, when the orchestrator handles the transcript, then the tool call is rejected. This criterion belongs to FR-018 only. A model request to mark the plan approved is AC-024.
 
 ### AC-023 Approval record
 
 Given review, when the user activates approve, then an `approval_record` stores user id, time, and the version `content_hash`, and status is `approved`.
 
-### AC-024 Approval is not language
+### AC-024 Approval is not a model action
 
-Given a model explanation that says the plan is approved, when no approval command has run, then status remains `review`.
+Given a model explanation that says the plan is approved, or a model request for a tool named `approve`, when no approval command has run, then the tool call is rejected if one was made and the status remains `review`.
 
 ### AC-025 Stale approval
 

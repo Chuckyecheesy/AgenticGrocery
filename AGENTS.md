@@ -2,8 +2,8 @@
 
 Instructions for implementation agents working on Agentic Grocery AI.
 
-**Stage:** Specification and research only.
-**Application status:** Not started. No source code, dependencies, cloud services, databases, or production infrastructure exist.
+**Stage:** Specification and research. An application skeleton is present.
+**Application status:** Skeleton only, added 2026-10-11 at the maintainer's request. No product UI, cloud services, databases, or production infrastructure. Dependencies are the Next.js toolchain in `package.json`.
 **Instruction file status:** Created 2026-10-11. No `CLAUDE.md` or other agent instruction file was present.
 
 Implementation must not begin until the specification phase is explicitly completed and approved.
@@ -31,10 +31,12 @@ The current phase is specification and research.
 
 During this phase, agents may create or update specification and research documents only when the current task asks for them.
 
+A skeleton already exists so `npm install`, `npm run dev`, `npm test`, and `npm run lint` can run. Do not add product behavior, the web UI, grocery data, or infrastructure unless the current task explicitly asks for it.
+
 Agents must not:
 
-- Implement application functionality or create application source code.
-- Install dependencies.
+- Implement product behavior, the web UI, or grocery data access beyond the existing skeleton, unless the current task explicitly asks.
+- Add dependencies beyond the skeleton toolchain in `package.json`, unless the current task explicitly asks.
 - Configure cloud services, databases, migrations, or production infrastructure.
 - Generate grocery datasets, including fake prices, promotions, availability, or coverage.
 - Start a proof of concept in order to answer an open question.

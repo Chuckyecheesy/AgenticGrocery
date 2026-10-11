@@ -4,7 +4,7 @@ Human-in-the-loop grocery assistant for people and families in Canada. The produ
 
 A user can start with a request such as: "I'm running out of groceries. Help me restock." The system researches stores and promotions, calculates prices and savings with deterministic code, asks for decisions that change the outcome, and stops at an explicit approval. It does not check out or purchase.
 
-**Status:** Specification phase. No application has been implemented.
+**Status:** Specification phase. An application skeleton is in the repository. The product UI is not built.
 
 **Research date:** 2026-10-11. External facts in the data documents come from public pages retrieved that day. No retailer API was called, no licence was signed, and no coverage sample was collected.
 
@@ -36,10 +36,23 @@ A user can start with a request such as: "I'm running out of groceries. Help me 
 | Product and technical specification | Draft, in this repository |
 | Data-source feasibility | Open. This is the critical blocker. |
 | Specification review | Not started |
-| Application implementation | Not started |
+| Application implementation | Skeleton only. Product UI and feature work are not started |
 | Pilot | Not started |
 
 The next step is a specification review, followed by a data-feasibility investigation. Implementation waits on those gates. See [specs/roadmap.md](specs/roadmap.md).
+
+## Application skeleton
+
+The skeleton is a Next.js and TypeScript server shell. It has no product screens. `GET /` returns JSON that says the UI is not built. `GET /api/health` returns a health check.
+
+```bash
+npm install
+npm run dev
+npm test
+npm run lint
+```
+
+Basket selection, retailer access, accounts, and the database are not implemented. The optimizer module checks integer money helpers and returns no prices.
 
 ## Documentation map
 
