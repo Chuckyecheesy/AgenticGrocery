@@ -141,6 +141,45 @@ Server-side rendering or an equivalent server view model is preferred so secrets
 
 The model has no tool for payment, retailer login, deletion of audit records, or setting `approved`.
 
+### What makes the workflow agentic
+
+The workflow is agentic because one orchestrator interprets a goal, chooses tools, pauses when information is missing, evaluates whether the evidence is strong enough to optimize, and returns control for approval. A single chat reply with no tool use and no persisted state is not this workflow. A fixed pipeline with no pause is not this workflow either.
+
+One orchestrator is enough. Meal planning, recurrence, and aisle order do not justify extra autonomous agents. They are later capabilities that would be additional tools if they are ever specified. See DEC-ARC-001.
+
+### Capability table
+
+| Capability | Input | Tool or data | Processing | Output | AI or deterministic | Human approval |
+| --- | --- | --- | --- | --- | --- | --- |
+| Goal interpretation | Restock text, saved staples | `get_profile` | Schema-validated needs | Editable need list | AI, then user edit | User confirms the list before research is complete (FR-007) |
+| Clarification | Missing mode input, ambiguous product, conflict | `ask_user` | Select a HITL question. Do not guess | `needs_input` | AI chooses the question. The HITL list is fixed | The answer is the approval of that decision |
+| Location | Consent and postal code or device location | `resolve_location` | Format check and consent | Place at the allowed precision | Deterministic | HITL-007 before device location |
+| Store research | Place, coverage configuration | `find_stores` | Authorized stores only | Store list or coverage gate | External data plus deterministic filter | User may pin or hide a store |
+| Offer retrieval | Needs, pinned snapshots | `search_offers` | Drop unlicensed, stale, and uncertain rows from the guaranteed set | Offer set with provenance | External data plus deterministic freshness rules | None until review |
+| Weekly flyer reading | Official flyer page, if DAT-OQ-009 passes | Future reader. Not built | Model proposes fields. A check against the page is required | Candidate offers, or `uncertain` | Hybrid. Not authorized yet | Prices stay out of the total until checked |
+| Normalization | Package text | `CMP-NORM` | Mass, volume, or count. Unknown stays unknown | Variant dimensions | Deterministic | None |
+| Hard constraints | Constraints, source attributes | Inside `CMP-OPT` | Remove violations. Unknown allergen is not "safe" | Eligible candidates | Deterministic | HITL-005 or HITL-008 when nothing remains or the request conflicts |
+| Basket optimization | Needs, offers, mode, cap | `optimize` | Integer-cent objective in [optimization.md](optimization.md) | Basket, exclusions, hash | Deterministic | Required before the plan is final |
+| Explanation | Optimizer JSON | `explain` | Language only. No new amounts | Short rationale | AI | The user approves the plan, not the paragraph |
+| Approval | Plan version and hash | Approval command | Compare hash. Ignore model text | `approval_record` | Deterministic | Explicit control (FR-017) |
+
+### Workflow steps
+
+| Step | Class |
+| --- | --- |
+| User goal | Human |
+| Understand the grocery need | AI, then human edit |
+| Identify items | AI draft from text and staples. Human confirms |
+| Retrieve current grocery data | External authorized data. Weekly flyer reading is hybrid and not authorized yet |
+| Normalize products, sizes, and units | Deterministic |
+| Filter hard constraints | Deterministic |
+| Compare stores and deals | Deterministic over retrieved offers |
+| Generate and optimize the basket | Deterministic |
+| Evaluate uncertainty | Deterministic freshness and eligibility rules |
+| Explain the result | AI, numbers copied from the result |
+| Human approval | Human |
+| Final shopping plan | Deterministic state change. No purchase |
+
 ### Workflow states
 
 `draft`, `needs_input`, `researching`, `optimizing`, `review`, `approved`, `blocked`, `abandoned`.

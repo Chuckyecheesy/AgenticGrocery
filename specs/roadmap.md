@@ -78,7 +78,7 @@ Optimization is specified now and implemented in phase 5 against fixtures before
 **Work.**
 
 - Implement CMP-OPT and CMP-NORM.
-- Run TC-OPT-001 through TC-OPT-027 (AC-035).
+- Run TC-OPT-001 through TC-OPT-028 (AC-035).
 - Point a connector at the G-1 source in a restricted environment.
 - Run AC-053 on the sample before any external user sees a price.
 
@@ -121,6 +121,17 @@ Optimization is specified now and implemented in phase 5 against fixtures before
 | G-4 | Fixture vertical slice passes the listed acceptance tests |
 | G-5 | Optimizer tests and a real sample audit pass |
 | G-6 | Pilot safeguards pass, and only the cleared region is enabled |
+
+## Product phases after the pilot
+
+These are not implementation gates. They start only after G-6, and only if the data each one needs is real. None of them is in the MVP.
+
+| Phase | Capability | Why it waits | Data dependency |
+| --- | --- | --- | --- |
+| After pilot | Recurring restock suggestions | The MVP already stores staples the user confirmed. Inferring "milk weekly" from behavior is a separate claim about the household | No purchase history is collected. A suggestion would require a source of past lists and a confirmation step before it changes staples. UNKNOWN — REQUIRES VALIDATION whether users want inference |
+| After pilot | Multi-store cost versus travel | The MVP can show a one-store plan and ask before a second store (HITL-004). It does not price the extra trip | Travel time, fare, and fuel cost are UNKNOWN — REQUIRES VALIDATION. No routing provider is selected |
+| Later | Meal to ingredients to basket | Recipe text can already be typed as needs. Turning a meal into a trusted ingredient list needs a recipe source and a mapping the user can correct | Recipe rights and ingredient-to-product mapping are UNKNOWN — REQUIRES VALIDATION |
+| Later, higher risk | In-store aisle order | Store layouts change, and a wrong aisle is a failed trip | Aisle-level data per store is UNKNOWN — REQUIRES VALIDATION. Do not invent an aisle order |
 
 ## Open questions
 

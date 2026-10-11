@@ -114,7 +114,7 @@ The model may handle language understanding, research coordination, explanations
 
 Deterministic code must handle prices, unit prices, basket totals, budget constraints, promotion math, savings, hard dietary constraints, and any other calculation that must be reproducible. The same inputs must produce the same basket. Hard dietary constraints are filters. The optimizer must not relax them. Unknown allergen data is not evidence that a product is safe.
 
-Normative detail, when implementation is eventually allowed: [specs/architecture.md](specs/architecture.md) and [specs/optimization.md](specs/optimization.md).
+Normative detail, when implementation is eventually allowed: [specs/architecture.md](specs/architecture.md) and [specs/optimization.md](specs/optimization.md). The capability table in the architecture document is the split between model work and deterministic work. Meal planning, inferred recurrence, travel-cost optimization, and aisle order stay out of the MVP.
 
 ## Human-in-the-loop
 

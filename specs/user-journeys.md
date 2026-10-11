@@ -3,7 +3,7 @@
 **Status:** Draft for specification review
 **Updated:** 2026-10-11
 
-These journeys show how the requirements in [product-requirements.md](product-requirements.md) behave. They do not add requirements. Calculations follow [optimization.md](optimization.md).
+These journeys show how the requirements in [product-requirements.md](product-requirements.md) behave. They do not add requirements. Calculations follow [optimization.md](optimization.md). Which steps are model work, deterministic work, external data, or human decisions is in the workflow table in [architecture.md](architecture.md).
 
 ```mermaid
 stateDiagram-v2

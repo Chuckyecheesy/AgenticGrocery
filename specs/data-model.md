@@ -70,7 +70,7 @@ Named attributes for quality and balanced modes. Examples: `brand:beatrice`, `la
 
 ### ENT-006 `staple_item`
 
-Saved restock line: display name, optional GTIN, default quantity, substitution policy for that staple.
+Saved restock line: display name, optional GTIN, default quantity, optional usual package size, whether that size is required, and substitution policy for that staple.
 
 ### ENT-007 `consent_record`
 
@@ -386,6 +386,25 @@ erDiagram
 | `coverage_region.enabled` | Gate check |
 
 Row-level security, if the ADR-001 database supports it, restricts household-owned tables by `household_id`. Source catalog tables are readable by the application role and writable by the connector role only.
+
+## Provenance checklist
+
+The offer and related rows are the record behind FR-010. Computed fields are not a second stored price.
+
+| Concept | Where it lives | Gap |
+| --- | --- | --- |
+| Source | `offer.source_id`, `source_snapshot` | None for ingested rows |
+| Retailer | `banner` through `store` | Zone-only flyers may have a banner and a null `store_id` (DM-OQ-001) |
+| Store or location | `store_id` or `zone_key` | UNKNOWN — REQUIRES VALIDATION which flyers are store-level versus zone-level |
+| Product and package | `variant` and `product` | Unparsed pack size stays `dimension = unknown` |
+| Unit and unit price | `quantity_base` and the rational computed at optimization | Display rounding is not stored as the payable price |
+| Price | `offer.price_cents` | Currency is CAD |
+| Promotion and conditions | `promotion`, `offer.conditions_text` | Conditions text is untrusted |
+| Eligibility | `eligibility_decision` | MVP loyalty decisions are `not_established` |
+| Geography | `zone_key`, store postal code, `coverage_region` | A national average has no store and cannot be an offer |
+| Retrieval time | `offer.observed_at`, snapshot times | None |
+| Effective and expiration | `valid_from`, `valid_to` | Null `valid_to` on a promotion forces `uncertain` |
+| Verification status | `freshness` plus `licence_status` | `current` is not a claim that a person re-checked the shelf |
 
 ## Open questions
 

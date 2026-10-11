@@ -19,6 +19,21 @@ Strategy that uses these notes: [ADR-002](../../adr/002-grocery-data-strategy.md
 | SRC-007 | Official weekly flyer pages | Model reads the flyer on the retailer site. No price API assumed. | Banner-specific, unverified | Not granted by this research | Unknown. Weekly pages exist; lag not measured. | Model-call cost unknown | Not tested. Rights still blocked. |
 | SRC-008 | Unofficial scraper APIs | Copies of retailer sites | Claims vary by vendor | No right for this product | Vendor claims, untested | Vendor price lists exist and were not adopted | Rejected |
 
+## Suitability classification
+
+Labels for this project, using the research above. "Verified" here means a public page was retrieved on 2026-10-11. It does not mean an integration test.
+
+| ID | Classification | Why |
+| --- | --- | --- |
+| SRC-001 | Verified as a published average-price table. Not suitable as a basket price or a savings baseline | The table and the open licence were read. The series is monthly and not store-level |
+| SRC-002 | Potential for identity. Requires licensing review. Not suitable as a price feed | ODbL, contents licence, and image licence were read. Share-alike versus a closed price table is unresolved (DAT-OQ-002) |
+| SRC-003 | Unknown coverage. Licence UNKNOWN — REQUIRES VALIDATION. Not suitable until both are resolved | Crowd-sourced prices. Canadian density was not counted |
+| SRC-004 | Requires authorization and licensing. Not suitable as a deal feed on the pages read | Subscriber registry. No shelf-price feed was found |
+| SRC-005 | Potential flyer source. Requires authorization and licensing | Partner token model was described by a third-party transcription of Flipp's docs. This project has no token and has not called the API |
+| SRC-006 | Unknown. Requires licensing | No retailer has been contacted |
+| SRC-007 | Potential method for weekly flyers. Requires authorization. Not suitable until DAT-OQ-009 passes | The candidate is a model reading the official flyer page. No page was read by a model. A public page is not a licence |
+| SRC-008 | Not suitable | Unofficial copies. No right for this product |
+
 ## SRC-001 Statistics Canada monthly average retail prices
 
 | Field | Note |
@@ -115,7 +130,7 @@ Sources: Flipp's documentation URL as cited by the catalog, `https://api.flipp.c
 
 Public consumer flyer pages, such as Metro's flyer, show that shoppers can view weekly flyers. They do not show a developer licence. Example observed in search: `https://www.metro.ca/en/flyer/`.
 
-## SRC-007 Retailer public websites
+## SRC-007 Official weekly flyer pages
 
 | Field | Note |
 | --- | --- |

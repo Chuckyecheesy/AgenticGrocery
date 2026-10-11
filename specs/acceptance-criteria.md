@@ -3,7 +3,7 @@
 **Status:** Draft for specification review
 **Updated:** 2026-10-11
 
-Each criterion is testable by an automated test, an API check, or a scripted pilot audit. Optimization fixtures TC-OPT-001 through TC-OPT-027 in [optimization.md](optimization.md) are part of this set. Nothing here has been executed.
+Each criterion is testable by an automated test, an API check, or a scripted pilot audit. Optimization fixtures TC-OPT-001 through TC-OPT-028 in [optimization.md](optimization.md) are part of this set. Nothing here has been executed.
 
 ## Traceability
 
@@ -11,7 +11,7 @@ Each criterion is testable by an automated test, an API check, or a scripted pil
 | --- | --- |
 | FR-001 | AC-001, AC-002 |
 | FR-002 | AC-003 |
-| FR-003 | AC-004 |
+| FR-003 | AC-004, AC-060 |
 | FR-004 | AC-005, AC-006 |
 | FR-005 | AC-007, AC-008, AC-009 |
 | FR-006 | AC-010, AC-011 |
@@ -24,9 +24,9 @@ Each criterion is testable by an automated test, an API check, or a scripted pil
 | FR-013 | AC-019, TC-OPT-024 |
 | FR-014 | AC-020, TC-OPT-026 |
 | FR-015 | AC-021, TC-OPT-018, TC-OPT-019 |
-| FR-016 | AC-022 |
-| FR-017 | AC-023, AC-024, AC-025 |
-| FR-018 | AC-026 |
+| FR-016 | AC-022, AC-061 |
+| FR-017 | AC-023, AC-024, AC-025, AC-062 |
+| FR-018 | AC-026, AC-062 |
 | FR-019 | AC-027, TC-OPT-020, TC-OPT-021, TC-OPT-022, TC-OPT-025 |
 | FR-020 | AC-028, AC-029 |
 | FR-021 | AC-030 |
@@ -89,6 +89,10 @@ Given onboarding, when the user enters a display name and household size, then t
 ### AC-004 Preference round trip
 
 Given a saved peanut constraint, budget, and staple, when a new plan starts, then the plan input contains those values. When the user overrides the budget for one plan and does not confirm a profile update, then the saved budget is unchanged.
+
+### AC-060 Usual package size
+
+Given a staple whose usual package size is "2 L" and that size is not marked required, when a plan is built, then the need shows "2 L" and a different parsed size of the same product may appear only as a labeled class-1 substitution. Given the user marks "2 L" required for that staple, when optimization runs, then other sizes of that staple are not included. TC-OPT-028 passes.
 
 ### AC-005 Mode selection
 
@@ -161,6 +165,14 @@ TC-OPT-018 and TC-OPT-019 pass. A line with a saving also stores the regular off
 ### AC-022 Review contents
 
 Given a result with included lines, one unmet need, and one stale offer, when review renders, then the three groups are separate, the stale offer is outside the total, and the approval control is available only for the included version.
+
+### AC-061 Explanation amounts
+
+Given an optimization result whose guaranteed total is 650 cents, when an explanation string states a different total, then the review total remains 650 cents and the explanation is not parsed to replace it.
+
+### AC-062 No purchase tool
+
+Given a model transcript that requests a tool named `purchase`, `checkout`, or `approve`, when the orchestrator handles the transcript, then the tool call is rejected and the plan status is not `approved`.
 
 ### AC-023 Approval record
 

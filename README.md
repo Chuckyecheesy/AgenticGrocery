@@ -26,6 +26,8 @@ A user can start with a request such as: "I'm running out of groceries. Help me 
 - Invented prices, invented quality scores, or savings without a documented baseline.
 - Applying a coupon or loyalty price before eligibility is established.
 - Canada-wide availability before retailer and geographic coverage are verified.
+- Inferring a shopping cadence before the user confirms it.
+- Meal planning and in-store aisle guidance in the first release.
 
 ## Current development stage
 
